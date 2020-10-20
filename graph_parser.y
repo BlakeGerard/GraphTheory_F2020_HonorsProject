@@ -40,7 +40,7 @@
 %token T_LCUR         "{"
 %token T_RCUR         "}"
 %token T_COMMA        ","
-%token T_EOF 0        "end of file";       
+%token T_EOF 0        "end of file"     
 %token <std::string>  T_ID
 
 %type <Graph*> graph;
@@ -51,7 +51,7 @@
 
 graph : T_LCUR pair_map T_RCUR
      {
-        graph->input_incidence_map($1);
+        graph->input_incidence_map($2);
      }
 
 pair_map : vertex_pair
