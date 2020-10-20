@@ -12,17 +12,8 @@
 Graph::Graph() {};
 Graph::~Graph() {};
 
-Graph::Graph(std::string incidence_map_str) {
-    this->incidence_map = build_incidence_map(incidence_map_str);
-};
-
-void Graph::input_incidence_map_str(std::string incidence_map_str) {
-    this->incidence_map = build_incidence_map(incidence_map_str);
-};
-
-std::map<Edge, std::pair<Vertex, Vertex>> Graph::build_incidence_map(std::string incidence_map_str) {
-    std::map<Edge, std::pair<Vertex, Vertex>> im;
-    return im;
+void Graph::input_incidence_map(std::map<Edge, std::pair<Vertex*, Vertex*>> parsed_map) {
+    this->incidence_map = parsed_map;
 };
 
 int Graph::compute_adjacency_matrix() {

@@ -15,12 +15,14 @@
 
 class Edge {
     protected:
+        std::string id;
         std::pair<Vertex, Vertex> connected_vertices;
         color_t color;
 
     public:
         Edge();
         ~Edge();
+        Edge(std::string id);
         Edge(std::pair<Vertex, Vertex> connected_vertices);
 };
 

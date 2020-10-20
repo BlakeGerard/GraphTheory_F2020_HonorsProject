@@ -22,4 +22,8 @@ Vertex::~Vertex() {};
         
 unsigned int Vertex::degree() {
     return _degree;
-}
+};
+
+void Vertex::increment_degree() {
+    _degree += 1;
+};

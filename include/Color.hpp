@@ -1,3 +1,7 @@
+
+#ifndef COLOR_H
+#define COLOR_H
+
 enum color_t {
     white = 0,
     grey,
@@ -9,3 +13,5 @@ enum color_t {
     blue,
     purple
 };
+
+#endif

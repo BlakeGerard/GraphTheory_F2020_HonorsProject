@@ -13,6 +13,10 @@
 Edge::Edge() {};
 Edge::~Edge() {};
 
+Edge::Edge(std::string id) {
+    this->id = id;
+};
+
 Edge::Edge(std::pair<Vertex, Vertex> connected_vertices) {
     this->connected_vertices = connected_vertices;
 }

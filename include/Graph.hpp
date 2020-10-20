@@ -26,16 +26,14 @@ class Graph {
 
     private:
         graph_type_t graph_type;
-        std::map<Edge, std::pair<Vertex, Vertex>> incidence_map;
-        std::map<Edge, std::pair<Vertex, Vertex>> build_incidence_map(std::string incidence_map_str);
+        std::map<Edge, std::pair<Vertex*, Vertex*>> incidence_map;
 
     public:
         // Constructors
         Graph();
         ~Graph();
-        Graph(std::string incidence_map_str);
 
-        void input_incidence_map_str(std::string incidence_map_str);
+        void input_incidence_map(std::map<Edge, std::pair<Vertex*, Vertex*>> parsed_map);
         graph_type_t type();
         int compute_adjacency_matrix();
 };

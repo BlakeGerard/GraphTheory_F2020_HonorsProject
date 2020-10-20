@@ -8,6 +8,7 @@
 */
 
 #include <vector>
+#include <string>
 #include "Color.hpp"
 
 #ifndef VERTEX_H
@@ -18,6 +19,7 @@ class Edge;
 
 class Vertex {
     private:
+        std::string id;
         unsigned int _degree;
         std::vector<Edge> incident_edges;
         std::vector<Vertex> adjacent_vertices;
@@ -27,9 +29,11 @@ class Vertex {
 
     public:
         Vertex();
+        Vertex(std::string id);
         Vertex(std::vector<Edge> incident_edges, std::vector<Vertex> adjacent_vertices);
         ~Vertex();
         unsigned int degree();
+        void increment_degree();
 };
 
 #endif
