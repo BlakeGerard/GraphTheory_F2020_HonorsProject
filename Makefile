@@ -5,8 +5,8 @@ PARSER = graph_parser
 
 LIBS = 
 INCL = -I. -I./include
-SRCS = driver.cpp ./src/*
-TEST_SRCS = tests.cpp ./src/*
+SRCS = driver.cpp $(SCANNER).c $(PARSER).c ./src/*
+TEST_SRCS = tests.cpp $(SCANNER).c $(PARSER).c ./src/*
 
 FLEX = flex
 BISON = bison

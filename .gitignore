@@ -1,2 +1,9 @@
 graph.exe
+tests.exe
 .vscode/
+
+graph_parser.c
+graph_parser.h
+graph_parser.output
+graph_scanner.c
+location.hh
