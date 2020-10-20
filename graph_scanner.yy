@@ -1,7 +1,6 @@
 %{ 
 #include <string>
 #include <iostream>
-#include <algorithm>
 
 // Flex incompatibility protection
 # undef yywrap

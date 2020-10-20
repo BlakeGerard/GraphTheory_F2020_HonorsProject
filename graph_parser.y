@@ -1,5 +1,5 @@
 %language "c++"
-%skeleton "lalr1.cc" /* -*- C++ -*- */
+%skeleton "lalr1.cc"
 %require "3.2"
 %locations
 %defines
@@ -26,9 +26,10 @@
     #include <string>
     #include <map>
     #include <vector>
+    #include <algorithm>
 
     // Declare Flex/Bison variables and functions
-    extern yy::qrane_parser::symbol_type yylex();
+    extern yy::graph_parser::symbol_type yylex();
     extern char *yytext;
     extern yy::location loc;
 
@@ -72,7 +73,7 @@ pair_map : vertex_pair
                edge_count += 1;
                
                Edge edge = Edge(edge_id);
-               $$.insert(std::make_pair(edge, $1));
+               $$.insert(std::make_pair(edge, $3));
            }
 
 vertex_pair : T_LCUR T_ID T_COMMA T_ID T_RCUR
@@ -80,15 +81,20 @@ vertex_pair : T_LCUR T_ID T_COMMA T_ID T_RCUR
                 Vertex* v1;
                 Vertex* v2;
 
-                if (auto it = std::find(ids_seen.begin(), ids_seen.end(), $2) != ids_seen.end()) {
-                    v1 = vertices_seen.at(it);
+                auto it = std::find(ids_seen.begin(), ids_seen.end(), $2);
+                if (it != ids_seen.end()) {
+                    v1 = vertices_seen[std::distance(ids_seen.begin(), it)];
+                    v1->increment_degree();
                 } else {
                     v1 = new Vertex($2);
                     ids_seen.push_back($2);
                     vertices_seen.push_back(v1);
                 }
-                if (auto it = std::find(ids_seen.begin(), ids_seen.end(), $4) != ids_seen.end()) {
-                    v2 = vertices_seen.at(it);
+
+                it = std::find(ids_seen.begin(), ids_seen.end(), $4);
+                if (it != ids_seen.end()) {
+                    v2 = vertices_seen[std::distance(ids_seen.begin(), it)];
+                    v2->increment_degree();
                 } else {
                     v2 = new Vertex($4);
                     ids_seen.push_back($4);
