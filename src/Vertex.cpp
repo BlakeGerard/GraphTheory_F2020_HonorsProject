@@ -10,15 +10,19 @@
 #include "Edge.hpp"
 
 Vertex::Vertex() {
-    
+    this->_degree = 0;
 };
 
-Vertex::Vertex(std::vector<Edge> incident_edges, std::vector<Vertex> adjacent_vertices) {
-    this->incident_edges = incident_edges;
-    this->adjacent_vertices = adjacent_vertices;
+Vertex::Vertex(std::string id) {
+    this->_id = id;
+    this->_degree = 0;
 };
 
 Vertex::~Vertex() {};
+
+std::string Vertex::id() {
+    return _id;
+};
         
 unsigned int Vertex::degree() {
     return _degree;

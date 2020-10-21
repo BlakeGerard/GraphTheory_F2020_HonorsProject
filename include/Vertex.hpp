@@ -19,7 +19,7 @@ class Edge;
 
 class Vertex {
     private:
-        std::string id;
+        std::string _id;
         unsigned int _degree;
         std::vector<Edge> incident_edges;
         std::vector<Vertex> adjacent_vertices;
@@ -30,8 +30,9 @@ class Vertex {
     public:
         Vertex();
         Vertex(std::string id);
-        Vertex(std::vector<Edge> incident_edges, std::vector<Vertex> adjacent_vertices);
         ~Vertex();
+
+        std::string id();
         unsigned int degree();
         void increment_degree();
 };

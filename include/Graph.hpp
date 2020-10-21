@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <sstream>
 #include "Edge.hpp"
 
 #ifndef GRAPH_H
@@ -36,6 +37,9 @@ class Graph {
         void input_incidence_map(std::map<Edge, std::pair<Vertex*, Vertex*>> parsed_map);
         graph_type_t type();
         int compute_adjacency_matrix();
+
+        // Printing functions for debugging
+        void print();
 };
 
 #endif

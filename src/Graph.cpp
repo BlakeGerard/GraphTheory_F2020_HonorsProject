@@ -7,6 +7,7 @@
         Class to encode a Graph.
 */
 
+#include <iostream>
 #include "Graph.hpp"
 
 Graph::Graph() {};
@@ -24,3 +25,17 @@ int Graph::compute_adjacency_matrix() {
 Graph::graph_type_t Graph::type() {
     return graph_type;
 };
+
+void Graph::print() {
+    std::ostringstream output;
+    unsigned int count = 0;
+
+    output << "{ ";
+    for(auto it = incidence_map.begin(); it != incidence_map.end(); ++it) {
+        output << "{" << it->second.first->id() << ", " << it->second.second->id() << "}";
+        if (count < incidence_map.size() - 1) { output << ", "; }
+        count += 1;
+    }
+    output << " }";
+    std::cout << output.str() << std::endl;
+}

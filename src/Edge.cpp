@@ -7,6 +7,7 @@
         Class to represent an Edge in a graph.
 */
 
+#include <iostream>
 #include "Edge.hpp"
 
 /* Edge */
@@ -14,12 +15,20 @@ Edge::Edge() {};
 Edge::~Edge() {};
 
 Edge::Edge(std::string id) {
-    this->id = id;
+    this->_id = id;
 };
 
 Edge::Edge(std::pair<Vertex, Vertex> connected_vertices) {
     this->connected_vertices = connected_vertices;
 }
+
+bool Edge::operator <(const Edge& rhs) const {
+    return _id < rhs._id;
+};
+
+std::string Edge::id() {
+    return this->_id;
+};
 
 /* WeightedEdge */
 WeightedEdge::WeightedEdge() {};

@@ -15,7 +15,7 @@
 
 class Edge {
     protected:
-        std::string id;
+        std::string _id;
         std::pair<Vertex, Vertex> connected_vertices;
         color_t color;
 
@@ -24,6 +24,9 @@ class Edge {
         ~Edge();
         Edge(std::string id);
         Edge(std::pair<Vertex, Vertex> connected_vertices);
+        bool operator <(const Edge& rhs) const;
+
+        std::string id();
 };
 
 class WeightedEdge : public Edge {
