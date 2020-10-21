@@ -57,23 +57,26 @@ graph : T_LCUR pair_map T_RCUR
 
 pair_map : vertex_pair
            {
-               $$ = std::map<Edge, std::pair<Vertex*, Vertex*>>();
+               auto map_start = std::map<Edge, std::pair<Vertex*, Vertex*>>();
 
                // Name the edge and increase the edge count
-               std::string edge_id = "e" + edge_count;
                edge_count += 1;
-
-               // Create a new Edge and map it to the vertex_pair
+               std::string edge_id = std::string("e");
+               edge_id.append(std::to_string(edge_count));
                Edge edge = Edge(edge_id);
-               $$.insert(std::make_pair(edge, $1));
+
+               // Map edge to vertex_pair
+               map_start.insert(std::make_pair(edge, $1));
+               $$ = map_start;
            }
            | pair_map T_COMMA vertex_pair 
            {
                $$ = $1;
 
                // Name the edge and increase the edge count
-               std::string edge_id = "e" + edge_count;
                edge_count += 1;
+               std::string edge_id = std::string("e");
+               edge_id.append(std::to_string(edge_count));
                
                // Create a new Edge and map it to the vertex_pair
                Edge edge = Edge(edge_id);
@@ -99,6 +102,7 @@ vertex_pair : T_LCUR T_ID T_COMMA T_ID T_RCUR
                     v1 = new Vertex($2);
                     ids_seen.push_back($2);
                     vertices_seen.push_back(v1);
+                    v1->increment_degree();
                 }
 
                 // Search for the v2 ID in the list of seen ids
@@ -115,6 +119,7 @@ vertex_pair : T_LCUR T_ID T_COMMA T_ID T_RCUR
                     v2 = new Vertex($4);
                     ids_seen.push_back($4);
                     vertices_seen.push_back(v2);
+                    v2->increment_degree();
                 }
                 
                 // Return (v1, v2) pair

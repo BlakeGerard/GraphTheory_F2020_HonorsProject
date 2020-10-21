@@ -1,6 +1,7 @@
 %{ 
 #include <string>
 #include <iostream>
+#include "graph_parser.h"
 
 // Flex incompatibility protection
 # undef yywrap
