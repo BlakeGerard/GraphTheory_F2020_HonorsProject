@@ -25,7 +25,7 @@ class Edge {
         Edge(unsigned int label, std::pair<const Vertex*, const Vertex*> connected_vertices);
 
         // Get Methods
-        unsigned int label();
+        unsigned int label() const;
 
         // Operators
         bool operator<(const Edge& rhs) const;

@@ -20,7 +20,7 @@ Edge::Edge(unsigned int label, std::pair<const Vertex*, const Vertex*> connected
 }
 
 // Get Methods
-unsigned int Edge::label() {
+unsigned int Edge::label() const {
     return this->_label;
 };
 
