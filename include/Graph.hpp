@@ -11,6 +11,7 @@
 #include <vector>
 #include <map>
 #include <sstream>
+#include <set>
 #include "Edge.hpp"
 
 #ifndef GRAPH_H
@@ -27,19 +28,24 @@ class Graph {
 
     private:
         graph_type_t graph_type;
-        std::map<Edge, std::pair<Vertex*, Vertex*>> incidence_map;
+        std::set<Vertex> vertices; 
+        std::map<Edge, std::pair<const Vertex*, const Vertex*>> incidence_map;
 
     public:
         // Constructors
         Graph();
         ~Graph();
 
-        void input_incidence_map(std::map<Edge, std::pair<Vertex*, Vertex*>> parsed_map);
+        // Get Methods
         graph_type_t type();
-        int compute_adjacency_matrix();
+        const Vertex* get_vertex_ptr_by_id(std::string id);
 
-        // Printing functions for debugging
-        void print();
+        // Set Methods
+        const Vertex* add_vertex(Vertex v);
+        bool add_edge(Edge e, std::pair<const Vertex*, const Vertex*> pair);
+
+        // Printing Methods
+        void print_edge_list();
 };
 
 #endif

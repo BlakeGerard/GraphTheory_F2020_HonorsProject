@@ -10,23 +10,33 @@
 #include <iostream>
 #include "Graph.hpp"
 
-Graph::Graph() {};
-Graph::~Graph() {};
-
-void Graph::input_incidence_map(std::map<Edge, std::pair<Vertex*, Vertex*>> parsed_map) {
-    this->incidence_map = parsed_map;
+Graph::Graph() {
+    vertices = std::set<Vertex>();
+    incidence_map = std::map<Edge, std::pair<const Vertex*, const Vertex*>>();
 };
 
-int Graph::compute_adjacency_matrix() {
-    int status = 1;
-    return status;
+Graph::~Graph() {};
+
+const Vertex* Graph::add_vertex(Vertex v) {
+    std::set<Vertex>::iterator it = (vertices.insert(v)).first;
+    return &(*it);
+};
+
+bool Graph::add_edge(Edge e, std::pair<const Vertex*, const Vertex*> pair) {
+    auto ret = incidence_map.insert({e, pair});
+    return ret.second;
 };
 
 Graph::graph_type_t Graph::type() {
     return graph_type;
 };
 
-void Graph::print() {
+const Vertex* Graph::get_vertex_ptr_by_id(std::string id) {
+    auto it = vertices.find(Vertex(id, 0));
+    return &(*it);
+};
+
+void Graph::print_edge_list() {
     std::ostringstream output;
     unsigned int count = 0;
 
