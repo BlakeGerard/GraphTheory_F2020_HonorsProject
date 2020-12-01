@@ -7,7 +7,7 @@
         Class to represent a Vertex in a graph.
 */
 
-#include <vector>
+#include <set>
 #include <string>
 #include "Color.hpp"
 
@@ -20,21 +20,26 @@ class Edge;
 class Vertex {
     private:
         std::string _id;
-        unsigned int _degree;
-        std::vector<Edge> incident_edges;
-        std::vector<Vertex> adjacent_vertices;
-
-    protected:
-        color_t color;
+        unsigned int _label;
+        mutable std::vector<Edge> incident_edges;
+        mutable std::set<const Vertex*> adjacent_vertices;
 
     public:
+        // Constructors
         Vertex();
-        Vertex(std::string id);
+        Vertex(std::string id, unsigned int label);
         ~Vertex();
 
-        std::string id();
-        unsigned int degree();
-        void increment_degree();
+        // Get Methods
+        std::string id() const;
+        unsigned int label() const;
+        std::size_t degree();
+
+        // Set Methods
+        void new_adjacent_vertex(const Vertex* v) const;
+
+        // Operators
+        bool operator<(const Vertex& rhs) const;
 };
 
 #endif

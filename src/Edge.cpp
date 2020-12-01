@@ -10,34 +10,21 @@
 #include <iostream>
 #include "Edge.hpp"
 
-/* Edge */
+// Constructors
 Edge::Edge() {};
 Edge::~Edge() {};
 
-Edge::Edge(std::string id) {
-    this->_id = id;
-};
-
-Edge::Edge(std::pair<Vertex, Vertex> connected_vertices) {
+Edge::Edge(unsigned int label, std::pair<const Vertex*, const Vertex*> connected_vertices) {
+    this->_label = label;
     this->connected_vertices = connected_vertices;
 }
 
-bool Edge::operator <(const Edge& rhs) const {
-    return _id < rhs._id;
+// Get Methods
+unsigned int Edge::label() {
+    return this->_label;
 };
 
-std::string Edge::id() {
-    return this->_id;
-};
-
-/* WeightedEdge */
-WeightedEdge::WeightedEdge() {};
-WeightedEdge::~WeightedEdge() {};
-
-WeightedEdge::WeightedEdge(int weight) {
-    this->weight = weight;
-};
-
-WeightedEdge::WeightedEdge(std::pair<Vertex, Vertex> connected_vertices) {
-    this->connected_vertices = connected_vertices;
+// Operators
+bool Edge::operator<(const Edge& rhs) const {
+    return _label < rhs._label;
 };

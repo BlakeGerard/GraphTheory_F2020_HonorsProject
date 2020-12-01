@@ -15,29 +15,20 @@
 
 class Edge {
     protected:
-        std::string _id;
-        std::pair<Vertex, Vertex> connected_vertices;
-        color_t color;
+        unsigned int _label;
+        std::pair<const Vertex*, const Vertex*> connected_vertices;
 
     public:
+        // Constructors
         Edge();
         ~Edge();
-        Edge(std::string id);
-        Edge(std::pair<Vertex, Vertex> connected_vertices);
-        bool operator <(const Edge& rhs) const;
+        Edge(unsigned int label, std::pair<const Vertex*, const Vertex*> connected_vertices);
 
-        std::string id();
-};
+        // Get Methods
+        unsigned int label();
 
-class WeightedEdge : public Edge {
-    protected:
-        int weight;
-    
-    public:
-        WeightedEdge();
-        ~WeightedEdge();
-        WeightedEdge(int weight);
-        WeightedEdge(std::pair<Vertex, Vertex> connected_vertices);
+        // Operators
+        bool operator<(const Edge& rhs) const;
 };
 
 #endif

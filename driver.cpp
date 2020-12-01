@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
         exit(2);
     }
 
-    g->print();
+    g->print_edge_list();
     
     return 0;
 };

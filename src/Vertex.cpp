@@ -9,25 +9,36 @@
 
 #include "Edge.hpp"
 
-Vertex::Vertex() {
-    this->_degree = 0;
-};
+// Constructors
+Vertex::Vertex() {};
 
-Vertex::Vertex(std::string id) {
+Vertex::Vertex(std::string id, unsigned int label) {
     this->_id = id;
-    this->_degree = 0;
+    this->_label = label;
 };
 
 Vertex::~Vertex() {};
 
-std::string Vertex::id() {
+// Get Methods
+std::string Vertex::id() const {
     return _id;
 };
+
+unsigned int Vertex::label() const {
+    return this->_label;
+};
         
-unsigned int Vertex::degree() {
-    return _degree;
+std::size_t Vertex::degree() {
+    return incident_edges.size();
 };
 
-void Vertex::increment_degree() {
-    _degree += 1;
+// Set Methods
+void Vertex::new_adjacent_vertex(const Vertex* v) const {
+    adjacent_vertices.insert(v);
+}
+
+// Operators
+bool Vertex::operator<(const Vertex& rhs) const {
+    return _id < rhs._id;
 };
+
