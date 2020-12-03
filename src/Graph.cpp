@@ -12,19 +12,13 @@
 #include "Graph.hpp"
 
 Graph::Graph() {
-    vertices = std::set<Vertex>();
-    incidence_map = edge_list();
+    incidence_map = std::map<unsigned int, std::pair<unsigned int, unsigned int>>();
 };
 
 Graph::~Graph() {};
 
-const Vertex* Graph::add_vertex(Vertex v) {
-    std::set<Vertex>::iterator it = (vertices.insert(v)).first;
-    return &(*it);
-};
-
-bool Graph::add_edge(Edge e, std::pair<const Vertex*, const Vertex*> pair) {
-    auto ret = incidence_map.insert({e, pair});
+bool Graph::add_edge(unsigned int edge, std::pair<unsigned int, unsigned int> pair) {
+    auto ret = incidence_map.insert({edge, pair});
     return ret.second;
 };
 
@@ -32,39 +26,34 @@ Graph::graph_type_t Graph::type() {
     return graph_type;
 };
 
-const Vertex* Graph::get_vertex_ptr_by_id(std::string id) {
-    auto it = vertices.find(Vertex(id, 0));
-    return &(*it);
-};
-
 /*
     Remove the edge denoted by the given label from the graph
 */
-void Graph::delete_edge_by_label(unsigned int label) {
-    auto edge_it = find_edge_by_label(label);
-
-    if (edge_it != incidence_map.end()) {
-        incidence_map.erase(edge_it);
-    }
+void Graph::delete_edge_by_label(unsigned int edge_label) {
+    incidence_map.erase(edge_label);
 };
 
 /*
     Contract the edge denoted by the given label from the graph
 */
-void Graph::contract_edge_by_label(unsigned int label) {
-    auto edge_it = find_edge_by_label(label);
+void Graph::contract_edge_by_label(unsigned int edge_label) {
+    std::pair<unsigned int, unsigned int> vertices = incidence_map.at(edge_label);
 
-    const Vertex* v1 = edge_it->second.first;
-    const Vertex* v2 = edge_it->second.second;
+    // First we get the vertices at the ends of the edge
+    unsigned int merger_label = vertices.first;
+    unsigned int mergee_label = vertices.second;
 
-    v1->consume_neighbors_of_contracted_vertex(v2);
-    v2->direct_neighbors_to_contracted_vertex(v1, v2);
-};
+    // We iterate through the map and replace any instance of mergee_label with merger_label
+    for (auto element : incidence_map) {
+        if (element.second.first == mergee_label) {
+            element.second.first = merger_label;
+        } else if (element.second.second == mergee_label) {
+            element.second.second = merger_label;
+        }
+    }
 
-std::map<Edge, std::pair<const Vertex*, const Vertex*>>::iterator Graph::find_edge_by_label(unsigned int label) {
-    auto it = std::find_if(incidence_map.begin(), incidence_map.end(), 
-    [label](const auto &it) -> bool { return it.first.label() == label; } );
-    return it;
+    // Finally, delete the edge from the map
+    incidence_map.erase(edge_label);
 };
 
 // Printing Methods
@@ -72,10 +61,13 @@ std::map<Edge, std::pair<const Vertex*, const Vertex*>>::iterator Graph::find_ed
 void Graph::print_edge_list() {
     std::ostringstream output;
     unsigned int count = 0;
+    std::string v1_id;
+    std::string v2_id;
 
     output << "{ ";
     for(auto it = incidence_map.begin(); it != incidence_map.end(); ++it) {
-        output << "{" << it->second.first->id() << ", " << it->second.second->id() << "}";
+
+        output << "{" << it->second.first << ", " << it->second.second << "}";
         if (count < incidence_map.size() - 1) { output << ", "; }
         count += 1;
     }

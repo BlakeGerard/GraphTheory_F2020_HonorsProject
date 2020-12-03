@@ -13,6 +13,7 @@
 #include <map>
 #include "Graph.hpp"
 #include "graph_parser.h"
+#include "include/Algorithms.hpp"
 
 extern yy::graph_parser::symbol_type yylex();
 extern FILE *yyin;

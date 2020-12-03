@@ -25,8 +25,6 @@
 %code {
     #include <string>
     #include <map>
-    #include <vector>
-    #include <algorithm>
 
     // Declare Flex/Bison variables and functions
     extern yy::graph_parser::symbol_type yylex();
@@ -35,7 +33,7 @@
 
     unsigned int vertex_count = -1;
     unsigned int edge_count = -1;
-    std::vector<std::string> ids_seen;
+    std::map<std::string, unsigned int> vertex_ids = std::map<std::string, unsigned int>();
 }
 
 %token T_LCUR         "{"
@@ -45,8 +43,8 @@
 %token <std::string>  T_ID
 
 %type <Graph*> graph;
-%type <std::map<Edge, std::pair<const Vertex*, const Vertex*>>> pair_map;
-%type <std::pair<const Vertex*, const Vertex*>> vertex_pair;
+%type <std::map<unsigned int, std::pair<unsigned int, unsigned int>>> pair_map;
+%type <std::pair<unsigned int, unsigned int>> vertex_pair;
 
 %%
 
@@ -56,95 +54,54 @@ graph : T_LCUR pair_map T_RCUR
 
 pair_map : vertex_pair
            {
-                // Increment the edge_count and make a new edge with label=edge_count
-                // and store the vertex pair with it.
                 edge_count += 1;
-                Edge edge = Edge(edge_count, $1);
-
-                // Insert the new edge into the Graph incidence map
-                graph->add_edge(edge, $1);
+                graph->add_edge(edge_count, $1);
            }
            | pair_map T_COMMA vertex_pair 
            {
                 $$ = $1;
-
-                // Increment the edge_count and make a new edge with label=edge_count
-                // and store the vertex pair with it.
                 edge_count += 1;
-                Edge edge = Edge(edge_count, $3);
-
-                // Insert the new edge into the Graph incidence map
-                graph->add_edge(edge, $3);
+                graph->add_edge(edge_count, $3);
            }
 
 vertex_pair : T_LCUR T_ID T_COMMA T_ID T_RCUR
             {
-                Vertex v1;                                  // Vertex corresponding to the first id
-                Vertex v2;                                  // Vertex corresponding to the second id
-                const Vertex* v1_ptr;                       // Ptr to v1 after it has been inserted into the graph
-                const Vertex* v2_ptr;                       // Ptr to v2 after it has been inserted into the graph
-                bool v1_found = false;                      // Bool if v1's id has already been seen
-                bool v2_found = false;                      // Bool if v2's id has already been seen
-                std::vector<std::string>::iterator it;      // Iterator for finding ids in ids_seen vector
+                unsigned int v1;
+                unsigned int v2;
+                unsigned int found;
 
                 // Search for the v1 label in the list of seen ids
-                it = std::find(ids_seen.begin(), ids_seen.end(), $2);
+                found = vertex_ids.count($2);
 
                 // If the vertex ID was NOT found
-                if (it == ids_seen.end()) {
+                if (!found) {
 
-                    // Increment the vertex_count and create a new vertex with id=$2 and label=vertex_count
                     vertex_count += 1;
-                    v1 = Vertex($2, vertex_count);
-
-                    // Add the vertex to the graph and recieve a ptr to that element in the vertex set
-                    v1_ptr = graph->add_vertex(v1);
-                    v1_found = true;
+                    v1 = vertex_count;
+                    vertex_ids.insert({$2, vertex_count});
 
                 } else {
 
                     // Otherwise, get the vertex_ptr from the graph to work with
-                    v1_ptr = graph->get_vertex_ptr_by_id(*it);
-                    v1_found = true;
+                    v1 = vertex_ids[$2];
                 }
 
                 // Search for the v2 ID in the list of seen ids
-                it = std::find(ids_seen.begin(), ids_seen.end(), $4);
+                found = vertex_ids.count($4);
 
-                if (it == ids_seen.end()) {
+                if (!found) {
 
-                    // Increment the vertex_count and create a new vertex with id=$2
-                    // and label=vertex_count
                     vertex_count += 1;
-                    v2 = Vertex($4, vertex_count);
-
-                    // Add the vertex to the graph and recieve a ptr to that element in the vertex set
-                    v2_ptr = graph->add_vertex(v2);
-                    v2_found = true;
+                    v2 = vertex_count;
+                    vertex_ids.insert({$4, vertex_count});
 
                 } else {
 
                     // Otherwise, get the vertex_ptr from the graph to work with
-                    v2_ptr = graph->get_vertex_ptr_by_id(*it);
-                    v2_found = true;
+                    v2 = vertex_ids[$4];
                 }
 
-                // At the end of that search, v1_ptr and v2_ptr will point to 
-                // the addresses of v1 and v2, respectively, in the graph's vertex set.
-
-                // Add new vertex ids to the list
-                if (!v1_found) { ids_seen.push_back($2); }
-                if (!v2_found) { ids_seen.push_back($4); }
-
-                // v1 and v2 should track each other in their respective adjacent_vertices sets
-                v1_ptr->new_adjacent_vertex(v2_ptr);
-                v2_ptr->new_adjacent_vertex(v1_ptr);
-
-                // Return (v1_ptr, v2_ptr) pair
-                std::pair<const Vertex*, const Vertex*> pair;
-                pair.first = v1_ptr;
-                pair.second = v2_ptr;
-                $$ = pair;
+                $$ = std::pair<unsigned int, unsigned int>(v1, v2);
             }
 %%
 
