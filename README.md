@@ -15,5 +15,14 @@ Graph g = {
 }
 ```
 
+## Available Algorithms
+### 1. Cayley's Deletion-Contraction Algorithm for Counting Spanning Trees
+```
+g = {{a, b}, {a, c}, {a, d}, {b, c}, {b, d}, {d, c}}    // K4
+unsigned int spanning_trees = cayley_deletion_contraction(*g);
+std::cout << spanning_trees;
+>> 16
+```
+
 ## Dependencies
 - Catch2: Unit testing {https://github.com/catchorg/Catch2}
