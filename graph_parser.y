@@ -19,12 +19,15 @@
     #define YY_NULLPTR 0
     #endif
 
+    #include <iostream>
+    #include <limits>
     #include "include/Graph.hpp"
 }
 
 %code {
     #include <string>
     #include <map>
+    #include <set>
 
     // Declare Flex/Bison variables and functions
     extern yy::graph_parser::symbol_type yylex();
@@ -50,18 +53,27 @@
 
 graph : T_LCUR pair_map T_RCUR
     {
+        std::set<unsigned int> vertices;
+        for (const auto& element : vertex_ids) {
+            vertices.insert(element.second);
+        }
+        graph->set_vertices(vertices);
     }
 
 pair_map : vertex_pair
            {
-                edge_count += 1;
-                graph->add_edge(edge_count, $1);
+                if ($1.first != UINT8_MAX) {
+                    edge_count += 1;
+                    graph->add_edge(edge_count, $1);
+                }
            }
            | pair_map T_COMMA vertex_pair 
            {
                 $$ = $1;
-                edge_count += 1;
-                graph->add_edge(edge_count, $3);
+                if ($3.first != UINT8_MAX) {
+                    edge_count += 1;
+                    graph->add_edge(edge_count, $3);
+                }
            }
 
 vertex_pair : T_LCUR T_ID T_COMMA T_ID T_RCUR
@@ -103,6 +115,22 @@ vertex_pair : T_LCUR T_ID T_COMMA T_ID T_RCUR
 
                 $$ = std::pair<unsigned int, unsigned int>(v1, v2);
             }
+            | T_LCUR T_ID T_RCUR
+            {
+                unsigned int found;
+
+                // Search for the v1 label in the list of seen ids
+                found = vertex_ids.count($2);
+
+                // If the vertex ID was NOT found
+                if (!found) {
+                    vertex_count += 1;
+                    vertex_ids.insert({$2, vertex_count});
+                }
+
+                $$ = std::pair<unsigned int, unsigned int>(UINT8_MAX, UINT8_MAX);
+            }
+            
 %%
 
 void yy::graph_parser::error (const yy::location & l, const std::string & s) {

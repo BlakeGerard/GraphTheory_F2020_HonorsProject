@@ -32,6 +32,7 @@ int main(int argc, char **argv) {
     Graph* g = new Graph();
     yy::graph_parser parser(g);
     int result = parser.parse();
+    fclose(input_graph);
 
     if (!result) {
         std::cout << "Parsing complete." << std::endl;
@@ -40,7 +41,9 @@ int main(int argc, char **argv) {
         exit(2);
     }
 
-    g->print_edge_list();
+    //g->print_graph();
+    unsigned int spanning_trees = cayley_deletion_contraction(*g);
+    std::cout << "spanning_trees: " << spanning_trees << std::endl;
     
     return 0;
 };
