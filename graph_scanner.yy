@@ -22,7 +22,7 @@ yy::location loc;
 %option yylineno
 %option noyywrap nounput
 
-ID [a-z][A-Za-z0-9_]*
+ID [A-Za-z0-9_'-]*
 
 %%
 

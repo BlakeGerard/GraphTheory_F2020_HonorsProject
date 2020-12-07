@@ -11,7 +11,7 @@ TEST_SRCS = tests.cpp $(SCANNER).c $(PARSER).c ./src/*
 FLEX = flex
 BISON = bison
 CXX = g++
-CXXFLAGS = -Wall -g -std=c++14
+CXXFLAGS = -Wall -g -O3 -std=c++14
 
 all: scanner parser bin
 

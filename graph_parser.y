@@ -36,6 +36,7 @@
 
     unsigned int vertex_count = -1;
     unsigned int edge_count = -1;
+    std::map<unsigned int, unsigned int> vertex_degrees = std::map<unsigned int, unsigned int>();
     std::map<std::string, unsigned int> vertex_ids = std::map<std::string, unsigned int>();
 }
 
@@ -53,11 +54,14 @@
 
 graph : T_LCUR pair_map T_RCUR
     {
+        /*
         std::set<unsigned int> vertices;
         for (const auto& element : vertex_ids) {
             vertices.insert(element.second);
         }
         graph->set_vertices(vertices);
+        */
+        graph->set_vertex_degree_map(vertex_degrees);
     }
 
 pair_map : vertex_pair
@@ -91,6 +95,7 @@ vertex_pair : T_LCUR T_ID T_COMMA T_ID T_RCUR
                     vertex_count += 1;
                     v1 = vertex_count;
                     vertex_ids.insert({$2, vertex_count});
+                    vertex_degrees.insert({vertex_count, 0});
 
                 } else {
 
@@ -106,12 +111,16 @@ vertex_pair : T_LCUR T_ID T_COMMA T_ID T_RCUR
                     vertex_count += 1;
                     v2 = vertex_count;
                     vertex_ids.insert({$4, vertex_count});
+                    vertex_degrees.insert({vertex_count, 0});
 
                 } else {
 
                     // Otherwise, get the vertex_ptr from the graph to work with
                     v2 = vertex_ids[$4];
                 }
+
+                vertex_degrees[v1] += 1;
+                vertex_degrees[v2] += 1;
 
                 $$ = std::pair<unsigned int, unsigned int>(v1, v2);
             }
@@ -126,6 +135,7 @@ vertex_pair : T_LCUR T_ID T_COMMA T_ID T_RCUR
                 if (!found) {
                     vertex_count += 1;
                     vertex_ids.insert({$2, vertex_count});
+                    vertex_degrees.insert({vertex_count, 0});
                 }
 
                 $$ = std::pair<unsigned int, unsigned int>(UINT8_MAX, UINT8_MAX);
