@@ -25,7 +25,7 @@ class Graph {
 
     public:
         graph_type_t graph_type;
-        std::set<unsigned int> vertices;
+        std::map<unsigned int, unsigned int> vertex_degree_map;
         std::map<unsigned int, std::pair<unsigned int, unsigned int>> incidence_map;
 
         // Constructors and graph population
@@ -34,6 +34,7 @@ class Graph {
         Graph(const Graph &g);
         bool add_edge(unsigned int edge, std::pair<unsigned int, unsigned int> vertices);
         void set_vertices(std::set<unsigned int> vertices);
+        void set_vertex_degree_map(std::map<unsigned int, unsigned int> vertex_degree_map);
 
         // Get methods
         graph_type_t type();

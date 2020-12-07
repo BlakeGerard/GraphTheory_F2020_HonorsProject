@@ -3,11 +3,8 @@
 #include "Graph.hpp"
 
 unsigned int cayley_deletion_contraction(Graph g) {
-    g.print_graph();
-    std::cout << "-----" << std::endl;
-
     unsigned int g_min_degree = g.min_degree();
-    if (g_min_degree == 0 && g.vertices.size() > 1) {                // Graph contains K1 as a component
+    if (g_min_degree == 0 && g.vertex_degree_map.size() > 1) {                // Graph contains K1 as a component
         return 0;
     } else if (g_min_degree == 0 && g.incidence_map.size() == 0) {   // Graph isomorphic to K1
         return 1;
