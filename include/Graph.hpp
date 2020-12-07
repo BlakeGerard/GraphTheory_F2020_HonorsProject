@@ -38,7 +38,8 @@ class Graph {
 
         // Get methods
         graph_type_t type();
-        unsigned int size();
+        unsigned int edge_count();
+        unsigned int vertex_count();
         unsigned int vertex_degree_by_label(unsigned int label);
         unsigned int min_degree();
         bool edge_is_loop(unsigned int label);

@@ -2,11 +2,25 @@
 #include "Algorithms.hpp"
 #include "Graph.hpp"
 
+/*
+    Compute the number of spanning trees in the given graph by 
+    the Cayley's recursive deletion-contraction algorithm.
+    Input:
+        g: Graph 
+    Output:
+        number of spanning trees on Graph g
+*/
 unsigned int cayley_deletion_contraction(Graph g) {
+
+    // Compute the minimum degree of the graph to evaluate the base cases
     unsigned int g_min_degree = g.min_degree();
-    if (g_min_degree == 0 && g.vertex_degree_map.size() > 1) {                // Graph contains K1 as a component
+
+    // Graph contains K1 as a component. Thus, it is disconnected and has zero spanning trees.
+    if (g_min_degree == 0 && g.vertex_degree_map.size() > 1) {         
         return 0;
-    } else if (g_min_degree == 0 && g.incidence_map.size() == 0) {   // Graph isomorphic to K1
+
+    // Graph isomorphic to K1. Thus, it has exactly one spanning tree.
+    } else if (g_min_degree == 0 && g.incidence_map.size() == 0) {   
         return 1;
     }
 
