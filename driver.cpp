@@ -35,13 +35,12 @@ int main(int argc, char **argv) {
     int result = parser.parse();
     fclose(input_graph);
 
-    if (!result) {
-        std::cout << "Parsing complete." << std::endl;
-    } else {
+    if (result) {
         std::cout << "Parsing failed." << std::endl;
         exit(2);
     }
 
+    /*
     std::clock_t c_start = std::clock();
     unsigned int spanning_trees = cayley_deletion_contraction(*g);
     std::cout << "spanning_trees: " << spanning_trees << std::endl;
@@ -49,6 +48,9 @@ int main(int argc, char **argv) {
 
     double time_elapsed_ms = 1000.0 * (c_end-c_start) / CLOCKS_PER_SEC;
     std::cout << "CPU time: " << time_elapsed_ms << " ms\n";
-    
+    */
+
+    unsigned int spanning_trees = cayley_deletion_contraction(*g);
+    std::cout << spanning_trees;
     return 0;
 };
