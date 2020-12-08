@@ -121,6 +121,7 @@ grid_3_4 2415
 grid_3_5 30305
 grid_4_4 100352
 grid_4_5 4140081
+grid_5_5 557568000
 circular_ladder_3 75
 circular_ladder_4 384
 circular_ladder_5 1805
@@ -151,7 +152,10 @@ harary_6_9 412164
 harary_7_9 1750329
 harary_8_9 4782969
 petersen_graph 2000
+poussin_graph 549549784
 house_graph 11
 dodecahedral_graph 5184000
 octahedral_graph 384
 icosahedral_graph 5184000
+usa_map 0
+world_map 0
